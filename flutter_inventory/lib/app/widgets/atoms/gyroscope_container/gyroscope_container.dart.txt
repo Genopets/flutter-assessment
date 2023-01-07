@@ -1,0 +1,50 @@
+import 'package:flutter/widgets.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+
+class GyroscopeContainer extends StatefulWidget {
+  const GyroscopeContainer(
+      {Key? key, required this.child, this.scaleMargin = 0.2})
+      : super(key: key);
+
+  final Widget child;
+  final double scaleMargin;
+
+  @override
+  _GyroscopeContainerState createState() => _GyroscopeContainerState();
+}
+
+class _GyroscopeContainerState extends State<GyroscopeContainer>
+    with SingleTickerProviderStateMixin {
+  double _gyroscopeX = 0;
+  double _gyroscopeY = 0;
+  double _multipleX = 0;
+  double _multipleY = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      setState(() {
+        _gyroscopeX = event.x / 10 * _multipleX;
+        _gyroscopeY = event.z / 10 * _multipleY;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _multipleX = MediaQuery.of(context).size.width * widget.scaleMargin;
+    _multipleY = MediaQuery.of(context).size.height * widget.scaleMargin;
+
+    return SizedBox(
+      height: double.infinity,
+      width: double.infinity,
+      child: Transform.scale(
+        scale: 1 + widget.scaleMargin,
+        origin: Offset(_gyroscopeX, _gyroscopeY),
+        child: widget.child,
+      ),
+    );
+  }
+}

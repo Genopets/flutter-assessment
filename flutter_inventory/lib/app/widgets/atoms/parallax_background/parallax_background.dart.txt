@@ -1,0 +1,195 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_inventory/app/widgets/atoms/parallax_background/parallax_item.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+// import 'package:flutter_sensors/flutter_sensors.dart';
+
+enum Direction { left, right, top, bottom }
+
+class ParallaxBackground extends StatefulWidget {
+  const ParallaxBackground(
+      {Key? key,
+      required this.backgroundImage,
+      required this.foregroundChildren,
+      this.child,
+      this.reverse = false,
+      this.fallback = false})
+      : super(key: key);
+
+  ///
+  /// Creates container for parallax background
+  ///
+  /// The arguments [backgroundImage], [foregroundChildren] must
+  /// not be null.
+  /// [reverse] can be used for reverse direction of foreground childs
+  /// [child] will be the widget to draw over this background
+  /// [fallback] will don't show the error message & render the background even without sensors
+  ///
+  final String backgroundImage;
+  final List<ParallaxItem> foregroundChildren;
+  final Widget? child;
+  final bool reverse;
+  final bool fallback;
+  @override
+  _ParallaxBackgroundState createState() => _ParallaxBackgroundState();
+}
+
+class _ParallaxBackgroundState extends State<ParallaxBackground> {
+  final _streamSubscriptions = <StreamSubscription<dynamic>>[];
+  AccelerometerEvent? _acceleration;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupSensor();
+  }
+
+  Future<void> _setupSensor() async {
+    _streamSubscriptions.add(
+      accelerometerEvents.listen(
+        (AccelerometerEvent event) {
+          setState(() {
+            _acceleration = event;
+          });
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      child: _acceleration != null || widget.fallback
+          ? Stack(
+              children: _generateBody(),
+            )
+          : const Center(
+              child: Text('Supported sensors not available on your device'),
+            ),
+    );
+  }
+
+  List<Widget> _generateBody() {
+    var widgets = <Widget>[
+      Positioned.fill(
+        child: Container(
+          // constraints: BoxConstraints.expand(),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(widget.backgroundImage), fit: BoxFit.none),
+          ),
+        ),
+      )
+    ];
+    widgets = _generateForeground(widgets);
+
+    if (widget.child != null) widgets.add(widget.child!);
+    return widgets;
+  }
+
+  List<Widget> _generateForeground(List<Widget> widgets) {
+    for (final element in widget.foregroundChildren) {
+      widgets.add(AnimatedPositioned(
+        duration: const Duration(milliseconds: 100),
+        bottom: _calculateOffset(Direction.bottom, element.offset),
+        top: _calculateOffset(Direction.top, element.offset),
+        left: _calculateOffset(Direction.left, element.offset),
+        right: _calculateOffset(Direction.right, element.offset),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width + (element.offset * 10),
+          height: MediaQuery.of(context).size.height + (element.offset * 10),
+          child: element.child,
+        ),
+      ));
+    }
+
+    return widgets;
+  }
+
+  double _calculateOffset(Direction _direction, double offset) {
+    var _itemOffset = 0 as double;
+    if (widget.reverse) {
+      switch (_direction) {
+        case Direction.left:
+          _itemOffset = (_acceleration!.x > 0
+                      ? _acceleration!.x
+                      : -_acceleration!.x.abs()) *
+                  offset -
+              (offset * 10);
+          break;
+        case Direction.right:
+          _itemOffset = (_acceleration!.x > 0
+                      ? -_acceleration!.x.abs()
+                      : _acceleration!.x.abs()) *
+                  offset -
+              (offset * 10);
+          break;
+        case Direction.top:
+          _itemOffset = (_acceleration!.y > 0
+                      ? -_acceleration!.y.abs()
+                      : _acceleration!.y.abs()) *
+                  offset -
+              (offset * 10);
+          break;
+        case Direction.bottom:
+          _itemOffset = (_acceleration!.y > 0
+                      ? _acceleration!.y
+                      : -_acceleration!.y.abs()) *
+                  offset -
+              (offset * 10);
+          break;
+      }
+    } else {
+      switch (_direction) {
+        case Direction.right:
+          _itemOffset = (_acceleration!.x > 0
+                      ? _acceleration!.x
+                      : -_acceleration!.x.abs()) *
+                  offset -
+              (offset * 10);
+          break;
+        case Direction.left:
+          _itemOffset = (_acceleration!.x > 0
+                      ? -_acceleration!.x.abs()
+                      : _acceleration!.x.abs()) *
+                  offset -
+              (offset * 10);
+          break;
+        case Direction.bottom:
+          _itemOffset = (_acceleration!.y > 0
+                      ? -_acceleration!.y.abs()
+                      : _acceleration!.y.abs()) *
+                  offset -
+              (offset * 10);
+          break;
+        case Direction.top:
+          _itemOffset = (_acceleration!.y > 0
+                      ? _acceleration!.y
+                      : -_acceleration!.y.abs()) *
+                  offset -
+              (offset * 10);
+          break;
+      }
+    }
+
+    return _itemOffset;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    for (final subscription in _streamSubscriptions) {
+      subscription.cancel();
+    }
+  }
+}
+
+class AccelerometerData {
+  AccelerometerData(this.x, this.y, this.z);
+
+  final double x;
+  final double y;
+  final double z;
+}
