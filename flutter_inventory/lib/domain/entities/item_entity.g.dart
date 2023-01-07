@@ -7,7 +7,7 @@ part of 'item_entity.dart';
 // **************************************************************************
 
 ItemEntity _$ItemEntityFromJson(Map<String, dynamic> json) => ItemEntity(
-      id: json['id'] as String,
+      id: json['itemId'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
       type: json['type'] as String,
@@ -21,7 +21,7 @@ ItemEntity _$ItemEntityFromJson(Map<String, dynamic> json) => ItemEntity(
 
 Map<String, dynamic> _$ItemEntityToJson(ItemEntity instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'itemId': instance.id,
       'name': instance.name,
       'description': instance.description,
       'type': instance.type,

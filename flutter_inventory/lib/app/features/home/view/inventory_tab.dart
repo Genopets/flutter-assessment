@@ -14,7 +14,7 @@ class InventoryTab extends StatelessWidget {
     final _appStore = Modular.get<AppStore>();
 
     return Observer(builder: (_) {
-      return InventoryScreen(inventory: _appStore.inventory);
+      return Scaffold(body: InventoryScreen(inventory: _appStore.inventory));
     });
   }
 }

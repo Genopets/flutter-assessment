@@ -26,6 +26,7 @@ class ItemEntity {
   factory ItemEntity.fromJson(Map<String, dynamic> json) =>
       _$ItemEntityFromJson(json);
 
+  @JsonKey(name: 'itemId')
   final String id;
 
   final String name;
