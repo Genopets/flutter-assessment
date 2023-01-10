@@ -1,9 +1,13 @@
 // import PocketBase from 'pocketbase'
 const PocketBase = require('pocketbase/cjs')
 
-async function getAll(){
-  const pb = new PocketBase('http://127.0.0.1:8090');
+const dbHost = 'http://127.0.0.1:8090';
+const pb = new PocketBase(dbHost);
+
+
+async function fetchAllItems(){
   const list = await pb.collection('items').getFullList();
+  
   return list;
 }
 
@@ -19,4 +23,6 @@ async function getAll(){
 // updated: '2023-01-07 19:10:58.265Z',
 // variant: '',
 // expand: {}
-export {getAll}
+export {
+  fetchAllItems
+}
