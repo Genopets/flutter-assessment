@@ -1,9 +1,10 @@
 import * as express from "express";
-import { getItemsController } from "../controllers/items.controller";
+import * as itemsController  from "../controllers/items.controller";
 
 const inventoryRouter = express.Router();
 
-inventoryRouter.get('/', getItemsController)
+inventoryRouter.get('/', itemsController.getAllItems)
+inventoryRouter.post('/', itemsController.getAllItems)
 
 
 export default inventoryRouter;
