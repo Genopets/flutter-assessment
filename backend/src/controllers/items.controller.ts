@@ -1,9 +1,8 @@
-import { getItemService as getItemService } from "../service/items.service"
+import * as itemService from "../service/items.service"
 import * as express from "express";
 
-async function getItemsController(req: express.Request, res: express.Response) {
-    const datos = await getItemService()
-    res.json(datos)
- }
+export const getAllItems = async (req: express.Request, res: express.Response) => {
+    const response = await itemService.getAllItems();
+    res.json(response)
+}
  
- export { getItemsController }
