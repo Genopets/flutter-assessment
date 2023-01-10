@@ -7,7 +7,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
-app.use('/api/v1/items', itemRouter);
+app.use(express.json());
+app.use('/api/v1/item', itemRouter);
 app.use('/api/v1/inventory', inventoryRouter);
 
 const PORT = 8080
