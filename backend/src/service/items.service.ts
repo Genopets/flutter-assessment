@@ -1,8 +1,6 @@
-import { getAll } from "../persistence/items.persistence"
+import { fetchAllItems } from "../persistence/items.persistence"
 
 
-async function getItemService() {
-    return await getAll()
+export const getAllItems = async() => {
+    return await fetchAllItems()
  }
- 
- export { getItemService }
