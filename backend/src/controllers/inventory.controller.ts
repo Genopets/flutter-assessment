@@ -8,7 +8,9 @@ export const getAllInventory = async (req: express.Request, res: express.Respons
 //TODO implement
  export const getANumberOfGifts = async (req: express.Request, res: express.Response) => {
     const request = req.body;
-    res.status(200).json(request)
+    //await 
+    inventoryService.getANumberOfGifts(request)
+    res.status(200).json("Sucessful")
  }
 
  export const getAGift = async (req: express.Request, res: express.Response) => {

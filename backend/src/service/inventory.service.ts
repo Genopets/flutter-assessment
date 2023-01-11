@@ -6,6 +6,13 @@ export const getAllInventory = async() => {
     return await fetchAllInventory()
  }
 
+ export const getANumberOfGifts = async(request) => {
+    const numberOfgifts = request.numberOfgifts;
+    for (let i = 0; i < numberOfgifts; i++) {
+        await getAGift();
+    }
+    return;
+}
  export const getAGift = async() => {
     const availableItems = await fetchAllItems();
     const randomIndex = Math.floor(Math.random() * availableItems.length);
