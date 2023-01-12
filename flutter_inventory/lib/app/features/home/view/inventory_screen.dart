@@ -42,10 +42,6 @@ class _InventoryScreenState extends State<InventoryScreen>
     _tabController =
         TabController(length: widget.inventoryTypes.length + 1, vsync: this);
 
-    _tabController.addListener(() {
-      setState(() {});
-    });
-
     Future.delayed(const Duration(milliseconds: 100), () {
       titleSTController.animate();
     });
@@ -60,6 +56,9 @@ class _InventoryScreenState extends State<InventoryScreen>
     if (oldWidget.inventoryTypes.length != widget.inventoryTypes.length) {
       _tabController =
           TabController(length: widget.inventoryTypes.length + 1, vsync: this);
+      _tabController.addListener(() {
+        setState(() {});
+      });
     }
   }
 
@@ -87,7 +86,6 @@ class _InventoryScreenState extends State<InventoryScreen>
     }).toList();
 
     // ignore: cascade_invocations
-
     views.insert(
         0,
         widget.inventory.isEmpty
@@ -120,19 +118,14 @@ class _InventoryScreenState extends State<InventoryScreen>
         .toList();
 
     // ignore: cascade_invocations
-
     tabs.insert(
       0,
       Tab(
         child: RectangularButton(
           title: 'all',
-
           // add the ALL tab
-
           selected: _tabController.index == 0,
-
           position: TabPosition.first,
-
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(sizes.scale700),
           ),

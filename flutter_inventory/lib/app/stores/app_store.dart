@@ -12,6 +12,8 @@ part 'app_store.g.dart';
 
 class AppStore = _AppStore with _$AppStore;
 
+//TODO To test android change the Localhost to
+//http://10.0.2.2:8090
 const host = 'http://127.0.0.1';
 final pb = PocketBase('$host:8090');
 
