@@ -41,27 +41,11 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$qtyAtom = Atom(name: '_AppStore.qty', context: context);
-
-  @override
-  int get qty {
-    _$qtyAtom.reportRead();
-    return super.qty;
-  }
-
-  @override
-  set qty(int value) {
-    _$qtyAtom.reportWrite(value, super.qty, () {
-      super.qty = value;
-    });
-  }
-
   @override
   String toString() {
     return '''
 globalItemsMap: ${globalItemsMap},
-inventory: ${inventory},
-qty: ${qty}
+inventory: ${inventory}
     ''';
   }
 }

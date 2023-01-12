@@ -88,14 +88,10 @@ abstract class _AppStore with Store, Disposable {
   ObservableList<InventoryEntity> inventory =
       ObservableList<InventoryEntity>.of([]);
 
-  @observable
-  int qty = 1;
-
   @override
   void dispose() {
     globalItemsMap = {};
     inventory.clear();
-    qty = 1;
     pb.collection('inventory').unsubscribe();
   }
 }

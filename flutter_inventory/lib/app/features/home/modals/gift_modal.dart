@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inventory/app/stores/app_store.dart';
+import 'package:flutter_inventory/app/stores/ui_store.dart';
 import 'package:flutter_inventory/app/styles/colors.dart';
 import 'package:flutter_inventory/app/styles/genopet_theme.dart';
 import 'package:flutter_inventory/app/widgets/atoms/button/simple_icon_button.dart';
@@ -9,9 +11,6 @@ import 'package:flutter_inventory/gen/assets.gen.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mobx/mobx.dart';
-
-import '../../../stores/app_store.dart';
 
 class GiftModal extends StatefulWidget {
   const GiftModal({super.key});
@@ -68,7 +67,7 @@ class _GiftModalState extends State<GiftModal> {
   }
 
   Widget _createBody() {
-    final _appStore = Modular.get<AppStore>();
+    final _uiStore = Modular.get<UiStore>();
     final sizes = theme.sizes;
     return Container(
       padding: EdgeInsets.symmetric(
@@ -92,7 +91,7 @@ class _GiftModalState extends State<GiftModal> {
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (_appStore.qty > 1)
+                if (_uiStore.qty > 1)
                   SimpleIconButton(
                     size: sizes.scale1200,
                     icon: RotationTransition(
@@ -110,7 +109,7 @@ class _GiftModalState extends State<GiftModal> {
                 else
                   SizedBox(width: sizes.scale1200),
                 SizedBox(width: sizes.scale600),
-                HeadlineSmall('${_appStore.qty}',
+                HeadlineSmall('${_uiStore.qty}',
                     style: Theme.of(context).textTheme.headline6?.copyWith(
                         color: theme.colors.primary.teal,
                         height: .90,
@@ -137,34 +136,38 @@ class _GiftModalState extends State<GiftModal> {
               height: sizes.scale800,
             ),
           ),
-          _createGiftButton()
+          _createGiftButton(_uiStore)
         ],
       ),
     );
   }
 
-  Widget _createGiftButton() {
+  Widget _createGiftButton(UiStore _uiStore) {
+    final _appStore = Modular.get<AppStore>();
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       child: SimpleTextButton('Confirm gift',
-          selected: true, icon: Assets.icons.genopetsLogoFilled, onTap: () {}),
+          selected: true, icon: Assets.icons.genopetsLogoFilled, onTap: () {
+        _appStore.getSomeGifts(_uiStore.qty);
+        Navigator.pop(context);
+      }),
     );
   }
 
   Future increaseQty({String type = 'decrease'}) async {
-    final _appStore = Modular.get<AppStore>();
+    final _uiStore = Modular.get<UiStore>();
     isBeingPressed = true;
     var sleepTime = 1000;
     var decreaseDelta = 250.0;
 
     while (isBeingPressed) {
       if (type == 'increase') {
-        _appStore.qty++;
-      } else if (_appStore.qty >= 1) {
-        _appStore.qty--;
+        _uiStore.qty++;
+      } else if (_uiStore.qty >= 1) {
+        _uiStore.qty--;
       }
       await Future.delayed(Duration(milliseconds: sleepTime), () {
-        if (sleepTime - decreaseDelta.toInt() >= 200) {
+        if (sleepTime - decreaseDelta.toInt() >= 250) {
           sleepTime -= decreaseDelta.toInt();
           decreaseDelta *= 3;
         } else {
