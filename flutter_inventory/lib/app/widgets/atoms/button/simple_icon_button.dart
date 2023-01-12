@@ -13,9 +13,15 @@ class SimpleIconButton extends StatefulWidget {
     this.size = 900,
     this.elevation = 0,
     this.padding,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
   }) : super(key: key);
 
   final void Function()? onPressed;
+  final Function(TapDownDetails)? onTapDown;
+  final Function(TapUpDetails)? onTapUp;
+  final Function()? onTapCancel;
   final ColorPresets preset;
   final bool disabled;
 
@@ -68,6 +74,9 @@ class _SweetButtonState extends State<SimpleIconButton> {
       borderRadius: BorderRadius.circular(360),
       shadowColor: color.withOpacity(0.2),
       child: InkWell(
+        onTapCancel: widget.onTapCancel,
+        onTapDown: widget.onTapDown,
+        onTapUp: widget.onTapUp,
         onTap: widget.onPressed,
         borderRadius: BorderRadius.circular(360),
         child: _buildView(context, color, gradient, theme),

@@ -1,24 +1,57 @@
-# Flutter Assessment
-
-![App Screenshot](screenshot.png)
+# Genopark
 
 This repo contains a simple mobile app with the backend powered by [Pocketbase](https://pocketbase.io) and the front-end in Flutter.
 
-## Getting Started
+#### Challenge Features
+* **[x] <del>Create a subscription to the database so that whenever the inventory’s items change, the UI will update automatically<del>**
+ * **How?** Using flutter's pocketbase package a suscription that listens to the inventory collection was openned. The inventoryList is observed in each pocketbase change
+* **[x] <del>Create an API endpoint using Node.js (You may use whatever framework you are most familiar with) to randomly gift the user an item. (Do not mutate the database directly from the mobile app)<del>**
+ * **How?** Using ExpressJs I built a restApi with the multilayer architecture with two endpoints one to gift one item and another to gift multiple items, the last one depends on the firstone at the service level.
+* **[x] <del>Create an interaction that pops a modal. Inside the modal there should be a number selector that specifies the number of random items you want to be gifted and a “GO” button. Upon pressing “GO”, the endpoint in #2 should be consumed to gift the user an item. This should automatically update in the UI using #1.<del>** 
+ * **How?** A button is placed in the homescreen that allows you to pop in a modal in order to choose the amount of gifts you want to receive.
+ 
+#### Challenge screenshots
+<p align="center">
+<img src="https://github.com/zphoenixz/geno-park/blob/main/screen0.png" width="400" height="400">
+</p>
+<p align="center">
+<img src="https://github.com/zphoenixz/geno-park/blob/main/screen1.png" width="400" height="400">
+</p>
+<p align="center">
+<img src="https://github.com/zphoenixz/geno-park/blob/main/screen2.png" width="400" height="400">
+</p>
 
-You need to have docker and flutter 3.3.0 installed on your machine to run this.
+#### Project's tech stack
+* **Frontend:** Flutter version: 3.3.10
+* **Backend:** NodeJs's ExpressJs written in Typescript
+* **DB:** Pocketbase
 
-To start the backend:
-
+#### Running
+**1. Get the repo**
+```
+git clone https://github.com/zphoenixz/geno-park.git
+```
+**2. Go to the DB folder and start the docker container**
+```
+cd backend/DB
+```
 ```
 docker-compose up -d
 ```
-
-The admin username is `hello@genopets.me` and the password is `flutter-assessment`.
-
-The security rules have been set to be fully public. There is no authentication needed to CRUD anything in the database.
-
-Then you may run the Flutter app in an emulator as usual, you should be able to see the above screen.
+**3. Go to the backend folder and start the NodeJs app**
+```
+cd backend 
+```
+```
+npx ts-node src/index.ts
+```
+**4. Go the the flutter folder and start preferred mobile emulator**
+```
+cd flutter_inventory
+```
+```
+Use sdk debug run
+```
 
 ## Architecture
 

@@ -29,13 +29,13 @@ mixin _$AppStore on _AppStore, Store {
       Atom(name: '_AppStore.inventory', context: context);
 
   @override
-  List<InventoryEntity> get inventory {
+  ObservableList<InventoryEntity> get inventory {
     _$inventoryAtom.reportRead();
     return super.inventory;
   }
 
   @override
-  set inventory(List<InventoryEntity> value) {
+  set inventory(ObservableList<InventoryEntity> value) {
     _$inventoryAtom.reportWrite(value, super.inventory, () {
       super.inventory = value;
     });

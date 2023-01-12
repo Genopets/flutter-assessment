@@ -6,8 +6,8 @@ import 'package:flutter_svg/svg.dart';
 
 enum TabPosition { first, last, inBetween }
 
-class TabBarItem extends StatelessWidget {
-  const TabBarItem(
+class RectangularButton extends StatelessWidget {
+  const RectangularButton(
       {Key? key,
       required this.title,
       required this.selected,
@@ -16,7 +16,8 @@ class TabBarItem extends StatelessWidget {
       this.position = TabPosition.inBetween,
       this.borderRadius,
       this.onTap,
-      this.hideIcon = false})
+      this.hideIcon = false,
+      this.useStrongOpacity = false})
       : super(key: key);
 
   final String title;
@@ -27,6 +28,7 @@ class TabBarItem extends StatelessWidget {
   final BorderRadius? borderRadius;
   final Function()? onTap;
   final bool hideIcon;
+  final bool useStrongOpacity;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,10 @@ class TabBarItem extends StatelessWidget {
     final colorText =
         selected ? _theme.colors.text.yellow : _theme.colors.text.teal;
     final _gradient = LinearGradient(
-      colors: [color.withOpacity(.3), Colors.transparent],
+      colors: [
+        if (useStrongOpacity) color.withOpacity(.4) else color.withOpacity(.3),
+        if (useStrongOpacity) color.withOpacity(.1) else Colors.transparent
+      ],
       begin: Alignment.bottomRight,
       end: Alignment.topLeft,
     );

@@ -12,6 +12,7 @@ InventoryEntity _$InventoryEntityFromJson(Map<String, dynamic> json) =>
           ItemEntity.fromJson(json['inventoryItem'] as Map<String, dynamic>),
       quantity: json['quantity'] as int,
       imageUrl: json['imageUrl'] as String,
+      inventoryId: json['inventoryId'] as String,
     );
 
 Map<String, dynamic> _$InventoryEntityToJson(InventoryEntity instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$InventoryEntityToJson(InventoryEntity instance) =>
       'inventoryItem': instance.inventoryItem,
       'quantity': instance.quantity,
       'imageUrl': instance.imageUrl,
+      'inventoryId': instance.inventoryId,
     };

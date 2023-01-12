@@ -35,13 +35,15 @@ class InventoryEntity {
   const InventoryEntity(
       {required this.inventoryItem,
       required this.quantity,
-      required this.imageUrl});
+      required this.imageUrl,
+      required this.inventoryId});
   factory InventoryEntity.fromJson(Map<String, dynamic> json) =>
       _$InventoryEntityFromJson(json);
 
   final ItemEntity inventoryItem;
   final int quantity;
   final String imageUrl;
+  final String inventoryId;
 
   Map<String, dynamic> toJson() => _$InventoryEntityToJson(this);
 
